@@ -1,0 +1,12 @@
+---
+- hosts: nodes
+  remote_user: deploy
+  become: yes
+  become_method: sudo
+  roles:
+    - role: ansible-role-users
+      tags: docker
+    - role: ansible-role-harden-linux
+      tags: docker
+    - role: ansible-role-docker
+      tags: docker
