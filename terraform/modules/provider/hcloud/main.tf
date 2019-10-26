@@ -60,11 +60,11 @@ resource "hcloud_floating_ip" "default" {
 
 # Reverse DNS
 resource "hcloud_rdns" "node" {
-  for_each = "${hcloud_server.node}"
+  for_each = "${var.servers}"
 
-  server_id       = "${each.value.id}"
-  ip_address      = "${each.value.ipv4_address}"
-  dns_ptr         = "${each.value.name}"
+  server_id       = "${lookup(hcloud_server.node[each.key], "id")}"
+  ip_address      = "${lookup(hcloud_server.node[each.key], "ipv4_address")}"
+  dns_ptr         = "${lookup(hcloud_server.node[each.key], "name")}"
 }
 resource "hcloud_rdns" "floating_ip_default" {
   floating_ip_id  = "${hcloud_floating_ip.default.id}"
