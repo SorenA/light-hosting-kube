@@ -49,6 +49,22 @@ worker02.default.cluster.example.com    >   Node: worker02
 
 Reverse DNS entries will also be added to the Floating IP and nodes at Hetzner matching the above.
 
+## Setup
+
+### Ansible
+
+Copy the `/ansible/group_vars/all/vars.yaml.example` as `/ansible/group_vars/all/vars.yaml` to configure ansible.
+
+The `root_password` and `user_password` should be the password part of a .htaccess user. After the configuration the user `deploy` should be used.
+
+Terraform exports node IPs as an Ansible inventory file located at `/ansible/inventories/<cluster-name>`. This inventory can be used to call re-provision the cluster using Ansible after Terraform has provisioned it the first time.
+
+Using the inventory:
+
+```bash
+ANSIBLE_CONFIG=ansible.cfg ansible-playbook -i inventories/default provision.yml
+```
+
 ## Inspirations
 
 Light Hosting Kube is the third iteration of my personal hosting setup.
