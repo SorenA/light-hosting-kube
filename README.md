@@ -31,6 +31,23 @@ Copy the `terraform.tfvars.example` as `terraform.tfvars` to configure the clust
 
 Terraform actions such as `terraform init` and `terraform apply` should be executed with the cluster directory as working directory.
 
+## Cluster naming and DNS entries
+
+A cluster is given a name and domain trough the configuration, the name is used for naming and tagging resources.
+
+The domain is used for creating DNS entries for the Floating IP and the nodes.
+
+Given the cluster domain `default.cluster.example.com`, the following DNS records would be created:
+
+```env
+default.cluster.example.com             >   Floating IP
+master01.default.cluster.example.com    >   Node: master01
+worker01.default.cluster.example.com    >   Node: worker01
+worker02.default.cluster.example.com    >   Node: worker02
+```
+
+Reverse DNS entries will also be added to the Floating IP and nodes at Hetzner matching the above.
+
 ## Inspirations
 
 Light Hosting Kube is the third iteration of my personal hosting setup.
