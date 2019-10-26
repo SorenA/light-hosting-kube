@@ -5,7 +5,6 @@ provider "local" {
 # Create Ansible Inventory file
 resource "local_file" "ansible_inventory" {
     content     = <<EOF
-[nodes]
 ${join("\n", values(var.server_ips))}
     EOF
     filename = "${path.root}/../../../ansible/clusters/${var.cluster_name}/inventory"
