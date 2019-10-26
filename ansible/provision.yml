@@ -8,6 +8,8 @@
       tags: users
     - role: ansible-role-harden-linux
       tags: harden-linux
+    - role: ansible-role-fail2ban
+      tags: fail2ban
     - role: ansible-role-docker
       tags: docker
     - role: ansible-role-hcloud-floating-ip

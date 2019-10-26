@@ -1,0 +1,21 @@
+---
+- name: Update APT package index
+  apt:
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Install fail2ban
+  apt:
+    state: present
+    pkg: 
+    - fail2ban
+    - sendmail
+
+- name: Copy fail2ban config
+  copy:
+    src: files/etc/fail2ban/jail.local
+    dest: /etc/fail2ban/jail.local
+    owner: root
+    group: root
+    mode: 0644
+    
