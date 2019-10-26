@@ -11,19 +11,39 @@ resource "hcloud_ssh_key" "default" {
 
 # Servers
 resource "hcloud_server" "node" {
-  for_each = "${var.servers}"
+  // for_each with provisioner using self causes Terraform to crash in v0.12.12: https://github.com/hashicorp/terraform/issues/23191
+  //for_each = "${var.servers}"
+  //name        = "${each.value.name}.${var.cluster_domain}"
+  //server_type = "${each.value.server_type}"
+
+  // Provision using count instead
+  count       = "${length(values(var.servers))}"
+  name        = "${lookup(element(values(var.servers), count.index), "name")}.${var.cluster_domain}"
+  server_type = "${lookup(element(values(var.servers), count.index), "server_type")}"
 
   image       = "${var.hcloud_image}"
   location    = "${var.hcloud_location}"
   backups     = "${var.hcloud_backups}"
-
-  name        = "${each.value.name}.${var.cluster_domain}"
-  server_type = "${each.value.server_type}"
-
   ssh_keys    = ["${hcloud_ssh_key.default.name}"]
 
   labels = {
     cluster = "${var.cluster_name}"
+  }
+
+  # Set hostname
+  provisioner "remote-exec" {
+    inline = [
+      "sudo hostnamectl set-hostname ${self.name}",
+    ]
+
+    connection {
+      host        = "${self.ipv4_address}"
+    }
+  }
+
+  # Run Ansible playbook for provisioning setup
+  provisioner "local-exec" {
+    command = "cd ${path.root}/../../../ansible/ && ANSIBLE_CONFIG=ansible.cfg ansible-playbook -i '${self.ipv4_address},' --extra-vars 'ansible_user=root floating_ip=${hcloud_floating_ip.default.ip_address}' provision.yml"
   }
 }
 
