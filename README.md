@@ -57,12 +57,12 @@ Copy the `/ansible/group_vars/all/vars.yml.example` as `/ansible/group_vars/all/
 
 The `root_password` and `user_password` should be the password part of a .htaccess user. After the configuration the user `deploy` should be used.
 
-Terraform exports node IPs as an Ansible inventory file located at `/ansible/inventories/<cluster-name>`. This inventory can be used to call re-provision the cluster using Ansible after Terraform has provisioned it the first time.
+Terraform exports node IPs as an Ansible inventory file located at `/ansible/clusters/<cluster-name>/inventory` and extra variables to `/ansible/clusters/<cluster-name>/vars.yml`. This inventory can be used to call re-provision the cluster using Ansible after Terraform has provisioned it the first time.
 
 Using the inventory:
 
 ```bash
-ANSIBLE_CONFIG=ansible.cfg ansible-playbook -i inventories/default provision.yml
+ANSIBLE_CONFIG=ansible.cfg ansible-playbook -i clusters/default/inventory --extra-vars "@clusters/default/vars.yml" provision.yml
 ```
 
 ## Inspirations

@@ -4,4 +4,4 @@
 *.tfvars
 *.retry
 ansible/group_vars/all/vars.yml
-ansible/inventories/
+ansible/clusters/

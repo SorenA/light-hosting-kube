@@ -43,4 +43,5 @@ module "ansible_inventory" {
 
   cluster_name    = "${var.cluster_name}"
   server_ips      = "${module.provider.server_ips}"
+  floating_ip     = "${module.provider.floating_ip}"
 }
