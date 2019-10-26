@@ -12,15 +12,18 @@ hcloud_token = "API-TOKEN"
 # Server definition
 servers = {
   "1" = {
-    name               = "master01"
-    server_type        = "cx11"
+    name                  = "master01"
+    server_type           = "cx11"
+    private_ip_address    = "10.0.0.10"
   },
   "2" = {
-    name               = "worker01"
-    server_type        = "cx21"
+    name                  = "worker01"
+    server_type           = "cx21"
+    private_ip_address    = "10.0.0.20"
   },
   "3" = {
-    name               = "worker02"
-    server_type        = "cx21"
+    name                  = "worker02"
+    server_type           = "cx21"
+    private_ip_address    = "10.0.0.21"
   },
 }

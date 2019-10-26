@@ -23,3 +23,9 @@ variable "hcloud_image" {
 variable "hcloud_backups" {
   default = false
 }
+variable "hcloud_network_ip_range" {
+  default = "10.0.0.0/16"
+}
+variable "hcloud_network_zone" {
+  default = "eu-central"
+}

@@ -51,3 +51,26 @@ resource "hcloud_rdns" "floating_ip_default" {
   ip_address      = "${hcloud_floating_ip.default.ip_address}"
   dns_ptr         = "${var.cluster_domain}"
 }
+
+# Private network
+resource "hcloud_network" "default" {
+  name      = "${var.cluster_name}"
+  ip_range  = "${var.hcloud_network_ip_range}"
+
+  labels = {
+    cluster = "${var.cluster_name}"
+  }
+}
+resource "hcloud_network_subnet" "default" {
+  network_id    = "${hcloud_network.default.id}"
+  type          = "server"
+  network_zone  = "${var.hcloud_network_zone}"
+  ip_range      = "${var.hcloud_network_ip_range}"
+}
+resource "hcloud_server_network" "node" {
+  for_each = "${var.servers}"
+
+  network_id  = "${hcloud_network.default.id}"
+  server_id   = "${lookup(hcloud_server.node[each.key], "id")}"
+  ip          = "${each.value.private_ip_address}"
+}
