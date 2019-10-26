@@ -1,0 +1,26 @@
+# Cluster configuration
+cluster_name    = "demo"
+cluster_domain  = "demo.example.com"
+
+# SSH configuration
+ssh_private_key     = "~/.ssh/id_rsa"
+ssh_public_key      = "~/.ssh/id_rsa.pub"
+ssh_public_key_name = "personal"
+
+hcloud_token = "API-TOKEN"
+
+# Server definition
+servers = {
+  "1" = {
+    name               = "master01"
+    server_type        = "cx11"
+  },
+  "2" = {
+    name               = "worker01"
+    server_type        = "cx21"
+  },
+  "3" = {
+    name               = "worker02"
+    server_type        = "cx21"
+  },
+}
