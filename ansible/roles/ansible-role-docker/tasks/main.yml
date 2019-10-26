@@ -37,3 +37,9 @@
     name: docker
     enabled: yes
     state: started
+
+- name: Add deploy user to docker group
+  user:
+    name: "deploy"
+    groups: "docker"
+    append: true
