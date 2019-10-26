@@ -36,3 +36,11 @@ module "dns" {
   server_ips      = "${module.provider.server_ips}"
   floating_ip     = "${module.provider.floating_ip}"
 }
+
+# Ansible Inventory
+module "ansible_inventory" {
+  source = "../../modules/ansible/ansible-inventory"
+
+  cluster_name    = "${var.cluster_name}"
+  server_ips      = "${module.provider.server_ips}"
+}
