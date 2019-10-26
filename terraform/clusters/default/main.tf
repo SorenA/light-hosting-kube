@@ -1,10 +1,10 @@
 # Backend configuration
 terraform {
-  backend "azurerm" {
-    resource_group_name  = "LightHosting"
-    storage_account_name = "lighthosting"
-    container_name       = "tfstate"
-    key                  = "demo.terraform.tfstate"
+  backend "azurerm" { # Change these as needed
+    resource_group_name  = "LightHosting" # Name of Azure Resource Group
+    storage_account_name = "lighthosting" # Name of Azure Storage Account
+    container_name       = "tfstate" # Name of container in storage account
+    key                  = "default.terraform.tfstate" # Should be unique per cluster!
   }
 }
 

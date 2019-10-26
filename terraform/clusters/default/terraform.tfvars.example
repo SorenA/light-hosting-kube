@@ -1,6 +1,6 @@
 # Cluster configuration
-cluster_name    = "demo"
-cluster_domain  = "demo.example.com"
+cluster_name    = "default"
+cluster_domain  = "default.cluster.example.com"
 
 # SSH configuration
 ssh_private_key     = "~/.ssh/id_rsa"
