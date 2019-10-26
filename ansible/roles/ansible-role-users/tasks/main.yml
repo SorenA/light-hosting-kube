@@ -1,0 +1,34 @@
+---
+- name: Delete root password file
+  file:
+    path: /root/.pw
+    state: absent
+
+- name: Create deploy user
+  user:
+    name: "deploy"
+    password: "{{ user_password }}"
+    uid: "9999"
+    shell: "/bin/bash"
+    home: "/home/deploy"
+
+- name: Add authorized ssh keys
+  authorized_key:
+    user: "deploy"
+    key: "{{ lookup('file', item) }}"
+  with_items:
+    - "{{ ssh_public_keys }}"
+  when: ssh_public_keys is defined
+
+- name: Add deploy user to sudoers
+  lineinfile:
+    dest: /etc/sudoers
+    regexp: "deploy ALL"
+    line: "deploy ALL=(ALL) NOPASSWD:ALL"
+    state: present
+
+- name: Change root password
+  user:
+    name: "root"
+    password: "{{ root_password }}"
+  when: root_password is defined
