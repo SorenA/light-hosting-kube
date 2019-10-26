@@ -1,0 +1,98 @@
+---
+- name: Update APT package index
+  apt:
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Install aptitude
+  apt:
+    pkg: aptitude
+    state: present
+
+- name: Upgrade APT to the latest packages
+  apt:
+    upgrade: safe
+
+- name: Install required packages
+  apt:
+    state: present
+    pkg: 
+    - ufw
+    - sshguard
+    - unattended-upgrades
+    - sudo
+
+- name: Enable auto APT update
+  copy:
+    src: etc/apt/apt.conf.d/10periodic
+    dest: /etc/apt/apt.conf.d/10periodic
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Configure sshd_config settings
+  lineinfile:
+    dest: "/etc/ssh/sshd_config"
+    regexp: "{{ item }}"
+    line: "{{ harden_sshd_config[item] }}"
+    state: "present"
+  notify: "restart ssh"
+  with_items:
+    - "{{ harden_sshd_config | list }}"
+
+- name: Configure Sysctl settings
+  sysctl:
+    name: "{{ item }}"
+    value: "{{ harden_sysctl_settings[item] }}"
+    sysctl_set: yes
+  with_items:
+    - "{{ harden_sysctl_settings | list }}"
+
+- name: UFW - Configure defaults
+  lineinfile:
+    dest: /etc/default/ufw
+    regexp: "{{ item }}"
+    line: "{{ harden_ufw_defaults[item] }}"
+    state: present
+  notify: "reload ufw"
+  with_items:
+    - "{{ harden_ufw_defaults | list }}"
+
+- name: UFW - Apply firewall rules
+  ufw:
+    rule: "{{ item.rule }}"
+    interface: "{{ item.interface | default('') }}"
+    direction: "{{ item.direction | default('in') }}"
+    from_ip: "{{ item.from_ip | default('any') }}"
+    to_ip: "{{ item.to_ip | default('any') }}"
+    from_port: "{{ item.from_port | default('') }}"
+    to_port: "{{ item.to_port | default('') }}"
+    protocol: "{{ item.protocol | default('any') }}"
+    log: "{{ item.log | default(False) }}"
+  with_items: "{{ harden_ufw_rules }}"
+
+- name: UFW - Allow configured networks to communicate
+  ufw:
+    rule: allow
+    src: "{{ item }}"
+  with_items:
+    - "{{ harden_ufw_allow_networks }}"
+  when: harden_ufw_allow_networks is defined
+
+- name: UFW - Disable logging
+  ufw:
+    logging: "off"
+
+- name: Update SSHguard white list
+  lineinfile:
+    dest: /etc/sshguard/whitelist
+    regexp: "^{{ item }}"
+    line: "{{ item }}"
+    state: present
+  with_items:
+    - "{{ harden_sshguard_whitelist }}"
+
+- name: UFW - Enable firewall/iptables
+  ufw:
+    state: enabled
+    

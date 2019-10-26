@@ -1,0 +1,56 @@
+---
+harden_sysctl_settings:
+  "net.ipv4.tcp_syncookies": 1                    # Enable syn flood protection
+  "net.ipv4.conf.all.accept_source_route": 0      # Ignore source-routed packets
+  "net.ipv6.conf.all.accept_source_route": 0      # IPv6 - Ignore ICMP redirects
+  "net.ipv4.conf.default.accept_source_route": 0  # Ignore source-routed packets
+  "net.ipv6.conf.default.accept_source_route": 0  # IPv6 - Ignore source-routed packets
+  "net.ipv4.conf.all.accept_redirects": 0         # Ignore ICMP redirects
+  "net.ipv6.conf.all.accept_redirects": 0         # IPv6 - Ignore ICMP redirects
+  "net.ipv4.conf.default.accept_redirects": 0     # Ignore ICMP redirects
+  "net.ipv6.conf.default.accept_redirects": 0     # IPv6 - Ignore ICMP redirects
+  "net.ipv4.conf.all.secure_redirects": 1         # Ignore ICMP redirects from non-GW hosts
+  "net.ipv4.conf.default.secure_redirects": 1     # Ignore ICMP redirects from non-GW hosts
+  "net.ipv4.ip_forward": 1                        # Allow traffic between networks or act as a router
+  "net.ipv6.conf.all.forwarding": 1               # IPv6 - Allow traffic between networks or act as a router
+  "net.ipv6.conf.default.forwarding": 1               # IPv6 - Allow traffic between networks or act as a router
+  "net.ipv4.conf.all.send_redirects": 0           # Don't allow traffic between networks or act as a router
+  "net.ipv4.conf.default.send_redirects": 0       # Don't allow traffic between networks or act as a router
+  "net.ipv4.conf.all.rp_filter": 1                # Reverse path filtering - IP spoofing protection
+  "net.ipv4.conf.default.rp_filter": 1            # Reverse path filtering - IP spoofing protection
+  "net.ipv4.icmp_echo_ignore_broadcasts": 1       # Ignore ICMP broadcasts to avoid participating in Smurf attacks
+  "net.ipv4.icmp_ignore_bogus_error_responses": 1 # Ignore bad ICMP errors
+  "net.ipv4.icmp_echo_ignore_all": 0              # Ignore bad ICMP errors
+  "net.ipv4.conf.all.log_martians": 1             # Log spoofed, source-routed, and redirect packets
+  "net.ipv4.conf.default.log_martians": 1         # Log spoofed, source-routed, and redirect packets
+  "net.ipv4.tcp_rfc1337": 1                       # Implement RFC 1337 fix
+  "kernel.randomize_va_space": 2                  # Randomize addresses of mmap base, heap, stack and VDSO page
+  "fs.protected_hardlinks": 1                     # Provide protection from ToCToU races
+  "fs.protected_symlinks": 1                      # Provide protection from ToCToU races
+  "kernel.kptr_restrict": 1                       # Make locating kernel addresses more difficult
+  "kernel.perf_event_paranoid": 2                 # Set perf only available to root
+
+harden_sshd_config:
+  "^PasswordAuthentication": "PasswordAuthentication no"  # Disable password authentication
+  "^PermitRootLogin": "PermitRootLogin no"                # Disable SSH root login
+  "^PermitTunnel": "PermitTunnel no"                      # Disable tun(4) device forwarding
+  "^Port ": "Port 22"                                     # Set SSHd port
+
+harden_ufw_rules:
+  - rule: "allow"
+    to_port: "22"
+    protocol: "tcp"
+
+harden_ufw_defaults:
+  "^IPV6": 'IPV6=yes'
+  "^DEFAULT_INPUT_POLICY": 'DEFAULT_INPUT_POLICY="DROP"'
+  "^DEFAULT_OUTPUT_POLICY": 'DEFAULT_OUTPUT_POLICY="ACCEPT"'
+  "^DEFAULT_FORWARD_POLICY": 'DEFAULT_FORWARD_POLICY="ACCEPT"' # Allow forwarding
+  "^DEFAULT_APPLICATION_POLICY": 'DEFAULT_APPLICATION_POLICY="SKIP"'
+  "^MANAGE_BUILTINS": 'MANAGE_BUILTINS=no'
+  "^IPT_SYSCTL": 'IPT_SYSCTL=/etc/ufw/sysctl.conf'
+  "^IPT_MODULES": 'IPT_MODULES="nf_conntrack_ftp nf_nat_ftp nf_conntrack_netbios_ns"'
+
+harden_sshguard_whitelist:
+  - "127.0.0.0/8"
+  - "::1/128"
