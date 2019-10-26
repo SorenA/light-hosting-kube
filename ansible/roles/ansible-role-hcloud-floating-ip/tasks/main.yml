@@ -1,0 +1,10 @@
+---
+- name: Create config for floating ip
+  template:
+    src: "etc/network/interfaces.d/60-hcloud-floating-ip.cfg"
+    dest: "/etc/network/interfaces.d/60-hcloud-floating-ip.cfg"
+
+- name: Restart networking
+  service:
+    name: networking
+    state: restarted
