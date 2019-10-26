@@ -21,3 +21,18 @@ module "provider" {
   ssh_public_key        = "${var.ssh_public_key}"
   ssh_public_key_name   = "${var.ssh_public_key_name}"
 }
+
+# Provision DNS
+module "dns" {
+  source = "../../modules/dns/cloudflare"
+
+  cloudflare_email    = "${var.cloudflare_email}"
+  cloudflare_api_key  = "${var.cloudflare_api_key}"
+  cloudflare_zone_id  = "${var.cloudflare_zone_id}"
+  
+  cluster_domain  = "${var.cluster_domain}"
+  servers         = "${var.servers}"
+
+  server_ips      = "${module.provider.server_ips}"
+  floating_ip     = "${module.provider.floating_ip}"
+}

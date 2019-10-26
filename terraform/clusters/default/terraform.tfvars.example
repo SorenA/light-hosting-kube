@@ -7,7 +7,13 @@ ssh_private_key     = "~/.ssh/id_rsa"
 ssh_public_key      = "~/.ssh/id_rsa.pub"
 ssh_public_key_name = "personal"
 
+# Hetzner configuration
 hcloud_token = "API-TOKEN"
+
+# Cloudflare configuration
+cloudflare_email    = "admin@example.com"
+cloudflare_api_key  = "API-KEY"
+cloudflare_zone_id  = "ZONE-ID" # Zone ID of domain in Cloudflare
 
 # Server definition
 servers = {

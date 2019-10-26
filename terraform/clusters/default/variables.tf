@@ -15,3 +15,9 @@ variable "ssh_public_key_name" {
 # Provider configuration - Hetzner
 
 variable "hcloud_token" {}
+
+# Provider configuration - Cloudflare
+
+variable "cloudflare_email" {}
+variable "cloudflare_api_key" {}
+variable "cloudflare_zone_id" {}
