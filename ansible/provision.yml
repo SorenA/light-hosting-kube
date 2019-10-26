@@ -5,8 +5,10 @@
   become_method: sudo
   roles:
     - role: ansible-role-users
-      tags: docker
+      tags: users
     - role: ansible-role-harden-linux
-      tags: docker
+      tags: harden-linux
     - role: ansible-role-docker
       tags: docker
+    - role: ansible-role-hcloud-floating-ip
+      tags: hcloud-floating-ip
