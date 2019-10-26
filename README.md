@@ -53,7 +53,7 @@ Reverse DNS entries will also be added to the Floating IP and nodes at Hetzner m
 
 ### Ansible
 
-Copy the `/ansible/group_vars/all/vars.yaml.example` as `/ansible/group_vars/all/vars.yaml` to configure ansible.
+Copy the `/ansible/group_vars/all/vars.yml.example` as `/ansible/group_vars/all/vars.yml` to configure ansible.
 
 The `root_password` and `user_password` should be the password part of a .htaccess user. After the configuration the user `deploy` should be used.
 
