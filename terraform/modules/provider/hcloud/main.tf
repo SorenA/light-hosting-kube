@@ -1,4 +1,5 @@
 provider "hcloud" {
+  version = "~> 1.14"
   token = "${var.hcloud_token}"
 }
 
