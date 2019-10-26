@@ -17,17 +17,17 @@ cloudflare_zone_id  = "ZONE-ID" # Zone ID of domain in Cloudflare
 
 # Server definition
 servers = {
-  "1" = {
+  "0" = {
     name                  = "master01"
     server_type           = "cx11"
     private_ip_address    = "10.0.0.10"
   },
-  "2" = {
+  "1" = {
     name                  = "worker01"
     server_type           = "cx21"
     private_ip_address    = "10.0.0.20"
   },
-  "3" = {
+  "2" = {
     name                  = "worker02"
     server_type           = "cx21"
     private_ip_address    = "10.0.0.21"
