@@ -4,6 +4,8 @@
   become: yes
   become_method: sudo
   roles:
+    - role: ansible-role-await-init-complete
+      tags: await-init-complete
     - role: ansible-role-users
       tags: users
     - role: ansible-role-harden-linux
