@@ -40,6 +40,12 @@ harden_ufw_rules:
   - rule: "allow"
     to_port: "22"
     protocol: "tcp"
+  - rule: "allow"
+    to_port: "80"
+    protocol: "tcp"
+  - rule: "allow"
+    to_port: "443"
+    protocol: "tcp"
 
 harden_ufw_defaults:
   "^IPV6": 'IPV6=yes'
