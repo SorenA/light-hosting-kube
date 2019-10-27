@@ -43,12 +43,14 @@ resource "hcloud_server" "node" {
 
   # Run Ansible playbook for provisioning setup
   provisioner "local-exec" {
-    command = "cd ${path.root}/../../../ansible/ && ANSIBLE_CONFIG=ansible.cfg ansible-playbook -i '${self.ipv4_address},' --extra-vars 'ansible_user=root floating_ip=${hcloud_floating_ip.default.ip_address}' provision.yml"
+    command = "cd ${path.root}/../../../ansible/ && ANSIBLE_CONFIG=ansible.cfg ansible-playbook -i '${self.ipv4_address},' --extra-vars 'ansible_user=root ${var.cluster_enable_floating_ip ? "floating_ip=${hcloud_floating_ip.default.0.ip_address}" : ""}' provision.yml"
   }
 }
 
 # Floating IP
 resource "hcloud_floating_ip" "default" {
+  count = "${var.cluster_enable_floating_ip ? 1 : 0}" # Only if floating ip is enabled
+
   type          = "ipv4"
   description   = "${var.cluster_domain}"
   home_location = "${var.hcloud_location}"
@@ -56,6 +58,12 @@ resource "hcloud_floating_ip" "default" {
   labels = {
     cluster = "${var.cluster_name}"
   }
+}
+resource "hcloud_floating_ip_assignment" "default" {
+  count = "${var.cluster_enable_floating_ip ? 1 : 0}" # Only if floating ip is enabled
+
+  floating_ip_id = "${hcloud_floating_ip.default.0.id}"
+  server_id = "${hcloud_server.node.0.id}" # Default to first node
 }
 
 # Reverse DNS
@@ -67,8 +75,10 @@ resource "hcloud_rdns" "node" {
   dns_ptr         = "${lookup(hcloud_server.node[each.key], "name")}"
 }
 resource "hcloud_rdns" "floating_ip_default" {
-  floating_ip_id  = "${hcloud_floating_ip.default.id}"
-  ip_address      = "${hcloud_floating_ip.default.ip_address}"
+  count = "${var.cluster_enable_floating_ip ? 1 : 0}" # Only if floating ip is enabled
+
+  floating_ip_id  = "${hcloud_floating_ip.default.0.id}"
+  ip_address      = "${hcloud_floating_ip.default.0.ip_address}"
   dns_ptr         = "${var.cluster_domain}"
 }
 
