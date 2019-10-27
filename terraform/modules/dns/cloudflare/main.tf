@@ -4,15 +4,6 @@ provider "cloudflare" {
   api_key = "${var.cloudflare_api_key}"
 }
 
-resource "cloudflare_record" "floating_ip" {
-  zone_id = "${var.cloudflare_zone_id}"
-  name    = "${var.cluster_domain}"
-  value   = "${var.floating_ip}"
-  type    = "A"
-  proxied = false
-  ttl     = 3600
-}
-
 resource "cloudflare_record" "nodes" {
   for_each = "${var.servers}"
 
@@ -22,4 +13,26 @@ resource "cloudflare_record" "nodes" {
   type    = "A"
   proxied = false
   ttl     = 3600
+}
+
+resource "cloudflare_record" "floating_ip" {
+  count = "${var.cluster_enable_floating_ip ? 1 : 0}" # Only if floating ip is enabled
+
+  zone_id = "${var.cloudflare_zone_id}"
+  name    = "${var.cluster_domain}"
+  value   = "${var.floating_ip}"
+  type    = "A"
+  proxied = false
+  ttl     = 600
+}
+
+resource "cloudflare_record" "cluster_cname" {
+  count = "${var.cluster_enable_floating_ip ? 1 : 0}" # Only if floating ip is enabled
+
+  zone_id = "${var.cloudflare_zone_id}"
+  name    = "*.${var.cluster_domain}"
+  value   = "${var.cluster_domain}"
+  type    = "CNAME"
+  proxied = false
+  ttl     = 600
 }
