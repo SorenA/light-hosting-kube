@@ -22,7 +22,3 @@ variable "hcloud_token" {}
 variable "cloudflare_email" {}
 variable "cloudflare_api_key" {}
 variable "cloudflare_zone_id" {}
-
-# Provider configuration - Rancher2
-
-variable "rancher_default_password" {}

@@ -6,3 +6,6 @@ user_password: HTPASSWD-HASHED-PASSWORD
 # SSH
 ssh_public_keys:
   - ~/.ssh/id_rsa.pub
+
+# Rancher
+rancher_admin_password: RAW-PASSWORD

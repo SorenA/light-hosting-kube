@@ -39,21 +39,13 @@ module "dns" {
   floating_ip     = "${module.provider.floating_ip}"
 }
 
-# Provision Rancher2
-module "k8s" {
-  source = "../../modules/k8s/rancher2"
-  
-  rancher_default_password    = "${var.rancher_default_password}"
-
-  cluster_domain  = "${var.cluster_domain}"
-  servers         = "${var.servers}"
-}
-
 # Ansible Inventory
 module "ansible_inventory" {
   source = "../../modules/ansible/ansible-inventory"
 
   cluster_name    = "${var.cluster_name}"
+  cluster_domain  = "${var.cluster_domain}"
+  servers         = "${var.servers}"
   server_ips      = "${module.provider.server_ips}"
   floating_ip     = "${module.provider.floating_ip}"
 }

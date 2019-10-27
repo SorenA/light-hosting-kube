@@ -47,15 +47,8 @@ resource "hcloud_server" "node" {
   }
 
   # Install Rancher if server is configured so
-  provisioner "remote-exec" {
-    inline = [
-      "${lookup(element(values(var.servers), count.index), "install_rancher") == true ? "docker run -d --restart=unless-stopped -v /opt/rancher:/var/lib/rancher -p 80:80 -p 443:443 rancher/rancher:latest --acme-domain ${lookup(element(values(var.servers), count.index), "name")}.${var.cluster_domain}" : ""}",
-    ]
-
-    connection {
-      host        = "${self.ipv4_address}"
-      user        = "deploy"
-    }
+  provisioner "local-exec" {
+    command = "${lookup(element(values(var.servers), count.index), "install_rancher") == true ? "cd ${path.root}/../../../ansible/ && ANSIBLE_CONFIG=ansible.cfg ansible-playbook -i '${self.ipv4_address},' --extra-vars 'rancher_ip_address=${self.ipv4_address} rancher_domain_name=${lookup(element(values(var.servers), count.index), "name")}.${var.cluster_domain}' provision-rancher2.yml" : ""}"
   }
 }
 

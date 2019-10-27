@@ -67,27 +67,17 @@ Using the inventory:
 ANSIBLE_CONFIG=ansible.cfg ansible-playbook -i clusters/default/inventory --extra-vars "@clusters/default/vars.yml" provision.yml
 ```
 
-### Rancher
+### Rancher2
 
 Setting up a self-contained Rancher2 cluster in Terraform runs into the chicken and the egg issues.
 
 Setting up a Rancher Agent node requires a cluster registration token from the Rancher node, however in order to get this, Rancher must be running, which it does after provisioning, where it's already too late, as all servers have been provisioned. Furthermore, starting a Rancher Agent on the Rancher server is impossible using Terraform, due to the same simple provisioning run.
 
-It could be solved by seperating the Rancher node from the Ranger Agents in the server map, however, I wanted all nodes to be treated equally, hence the shared map.
-The Rancher provisioning could be moved to Ansible, I wanted to keep it in Terraform however.
-
 The solution was to add a `core` cluster, where the Rancher node lives, and then connect all other clusters with Rancher Agent nodes to it. This gives a shared management interface, which technically allows embracing hybrid-cloud clusters, however no providers have been written for this on my part.
 
-The `core` cluster is provisioned like other clusters, but utilizes the `rancher2` module instead of the `rancher2-agent` module.
+The `core` cluster is provisioned like other clusters, runs an extra ansible script - `provision-rancher2.yml` - to provision the Rancher setup with LetsEncrypt cert.
 
-When provisioning the Rancher node, the boostrap may fail due to the server not being ready - awaiting a LetsEncrypt cert. This is nothing to worry about, another `terraform plan` will rectify this, the error looks like this:
-
-```log
-Error: [ERROR] Login with admin user: Post https://rancher.core.cluster.example.com/v3-public/localProviders/local?action=login: dial tcp 1.1.1.1:443: connect: connection refused
-
-  on ../../modules/k8s/rancher2/main.tf line 13, in resource "rancher2_bootstrap" "default":
-  13: resource "rancher2_bootstrap" "default" {
-```
+After the `core` cluster has been created, an API token should be created, to manage new clusters from Terraform.
 
 ## Inspirations
 
@@ -97,4 +87,6 @@ The previous iteration used terraform and ansible to provision, harden and confi
 
 After having read [Vito Botta](https://github.com/vitobotta)'s article [From zero to Kubernetes in Hetzner Cloud with Terraform, Ansible and Rancher](https://vitobotta.com/2019/10/14/kubernetes-hetzner-cloud-terraform-ansible-rancher/) where he used Rancher to configure the Kubernetes cluster, I wanted to recreate my setup in a similar fashion, using Ubuntu servers, and adding Cloudflare DNS on top.
 
-Harden linux ansible role was inspired by [Githubixx's ansible-role-harden-linux](https://github.com/githubixx/ansible-role-harden-linux).
+Harden Linux Ansible role was inspired by [Githubixx's ansible-role-harden-linux](https://github.com/githubixx/ansible-role-harden-linux).
+
+Rancher Ansible role was inspired by [Sylflo's rancher2-ansible](https://github.com/sylflo-ansible-kubernetes/rancher2-ansible)

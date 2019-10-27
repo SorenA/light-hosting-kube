@@ -1,7 +1,7 @@
 # Cluster configuration
 cluster_name                = "core"
 cluster_domain              = "core.cluster.example.com"
-cluster_enable_floating_ip  = true
+cluster_enable_floating_ip  = false
 
 # SSH configuration
 ssh_private_key     = "~/.ssh/id_rsa"
@@ -15,9 +15,6 @@ hcloud_token = "API-TOKEN"
 cloudflare_email    = "admin@example.com"
 cloudflare_api_key  = "API-KEY"
 cloudflare_zone_id  = "ZONE-ID" # Zone ID of domain in Cloudflare
-
-# Rancher configuration
-rancher_default_password = "PASSWORD"
 
 # Server definition
 servers = {

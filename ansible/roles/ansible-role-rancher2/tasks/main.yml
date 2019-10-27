@@ -1,0 +1,79 @@
+---
+- name: Launch Rancher2 in single-node mode with self-signed cert as setup container
+  command: docker run -d --name=rancher2-setup --restart=unless-stopped -v /opt/rancher:/var/lib/rancher -p 80:80 -p 443:443 rancher/rancher:latest
+  ignore_errors: true
+
+- name: Sign into Rancher2 with default password
+  uri:
+    url: 'https://{{ rancher_ip_address }}/v3-public/localProviders/local?action=login'
+    validate_certs: False
+    method: POST
+    body: { "username": "admin", "password": "admin" }
+    body_format: json
+    status_code: 201
+  register: rancher_login_result
+  until: rancher_login_result.status == 201
+  retries: 10
+  delay: 10
+  failed_when: rancher_login_result.status not in [201]
+  ignore_errors: true
+
+- name: Change password to configured
+  uri:
+    url: 'https://{{ rancher_ip_address }}/v3/users?action=changepassword'
+    validate_certs: False
+    method: POST
+    headers:
+      Authorization: "Bearer {{ rancher_login_result.json.token }}"
+    body: { "currentPassword": "admin", "newPassword": "{{ rancher_admin_password }}" }
+    body_format: json
+    status_code: 200
+  when: rancher_login_result.status in [201]
+
+- name: Sign into Rancher2 using new password
+  uri:
+    url: 'https://{{ rancher_ip_address }}/v3-public/localProviders/local?action=login'
+    validate_certs: False
+    method: POST
+    body: { "username": "admin", "password": "{{ rancher_admin_password }}" }
+    body_format: json
+    status_code: 201
+  register: rancher_login_result
+  until: rancher_login_result.status == 201
+  retries: 10
+  delay: 10
+
+- name: Create provisioning API token with 24h expiry
+  uri:
+    url: 'https://{{ rancher_ip_address }}/v3/token'
+    validate_certs: False
+    method: POST
+    headers:
+      Authorization: "Bearer {{ rancher_login_result.json.token }}"
+    body: { "current": false, "expired": false, "isDerived": false, "ttl": 86400000, "type": "token", "description": "Ansible Provisioning" }
+    body_format: json
+    status_code: 201
+  register: rancher_api_key_result
+
+- name: Set rancher server URL
+  uri:
+    url: 'https://{{ rancher_ip_address }}/v3/settings/server-url'
+    validate_certs: False
+    method: PUT
+    headers:
+      Authorization: "Bearer {{ rancher_api_key_result.json.token }}"
+    body: { "name": "server-url", "value": "https://{{ rancher_domain_name }}" }
+    body_format: json
+    status_code: 200
+
+- name: Stop Rancher2 setup-container
+  command: docker stop rancher2-setup
+  ignore_errors: true
+
+- name: Dispose of Rancher2 setup-container
+  command: docker rm rancher2-setup
+  ignore_errors: true
+
+- name: Launch Rancher2 in single-node mode with LetsEncrypt cert
+  command: docker run -d --name=rancher2 --restart=unless-stopped -v /opt/rancher:/var/lib/rancher -p 80:80 -p 443:443 rancher/rancher:latest --acme-domain {{ rancher_domain_name }}
+  ignore_errors: true

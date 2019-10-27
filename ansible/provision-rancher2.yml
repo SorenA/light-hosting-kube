@@ -1,0 +1,8 @@
+---
+- hosts: all
+  remote_user: deploy
+  become: yes
+  become_method: sudo
+  roles:
+    - role: ansible-role-rancher2
+      tags: rancher2
