@@ -12,7 +12,7 @@ resource "cloudflare_record" "nodes" {
   value   = "${var.server_ips[each.key]}"
   type    = "A"
   proxied = false
-  ttl     = 3600
+  ttl     = 600
 }
 
 resource "cloudflare_record" "floating_ip" {

@@ -10,6 +10,7 @@ ssh_public_key_name = "personal"
 
 # Hetzner configuration
 hcloud_token = "API-TOKEN"
+hcloud_manage_ssh_key = true
 
 # Cloudflare configuration
 cloudflare_email    = "admin@example.com"

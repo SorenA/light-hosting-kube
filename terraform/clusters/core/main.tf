@@ -12,7 +12,8 @@ terraform {
 module "provider" {
   source = "../../modules/provider/hcloud"
 
-  hcloud_token    = "${var.hcloud_token}"
+  hcloud_token          = "${var.hcloud_token}"
+  hcloud_manage_ssh_key = "${var.hcloud_manage_ssh_key}"
   
   cluster_name                = "${var.cluster_name}"
   cluster_domain              = "${var.cluster_domain}"

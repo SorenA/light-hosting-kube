@@ -5,8 +5,16 @@ provider "hcloud" {
 
 # SSH
 resource "hcloud_ssh_key" "default" {
-  name       = "${var.cluster_name}-${var.ssh_public_key_name}"
+  count = "${var.hcloud_manage_ssh_key ? 1 : 0}" # Only if SSH key is managed by Terraform
+
+  name       = "${var.ssh_public_key_name}"
   public_key = "${file(var.ssh_public_key)}"
+}
+
+data "hcloud_ssh_key" "default" {
+  count = "${var.hcloud_manage_ssh_key ? 0 : 1}" # Only if SSH key is not managed by Terraform
+
+  name       = "${var.ssh_public_key_name}"
 }
 
 # Servers
@@ -24,7 +32,7 @@ resource "hcloud_server" "node" {
   image       = "${var.hcloud_image}"
   location    = "${var.hcloud_location}"
   backups     = "${var.hcloud_backups}"
-  ssh_keys    = ["${hcloud_ssh_key.default.name}"]
+  ssh_keys    = ["${length(hcloud_ssh_key.default) > 0 ? hcloud_ssh_key.default.0.name : length(data.hcloud_ssh_key.default) > 0 ? data.hcloud_ssh_key.default.0.name : ""}"]
 
   labels = {
     cluster = "${var.cluster_name}"

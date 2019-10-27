@@ -1,6 +1,6 @@
 # Cluster configuration
-cluster_name                = "core"
-cluster_domain              = "core.cluster.example.com"
+cluster_name                = "default"
+cluster_domain              = "default.cluster.example.com"
 cluster_enable_floating_ip  = true
 
 # SSH configuration
@@ -10,6 +10,7 @@ ssh_public_key_name = "personal"
 
 # Hetzner configuration
 hcloud_token = "API-TOKEN"
+hcloud_manage_ssh_key = false
 
 # Cloudflare configuration
 cloudflare_email    = "admin@example.com"
@@ -19,18 +20,21 @@ cloudflare_zone_id  = "ZONE-ID" # Zone ID of domain in Cloudflare
 # Server definition
 servers = {
   "0" = {
-    name                  = "master01"
-    server_type           = "cx11"
-    private_ip_address    = "10.0.0.10"
-  },
-  "1" = {
     name                  = "worker01"
     server_type           = "cx21"
     private_ip_address    = "10.0.0.20"
+    install_rancher       = false
   },
-  "2" = {
+  "1" = {
     name                  = "worker02"
     server_type           = "cx21"
     private_ip_address    = "10.0.0.21"
+    install_rancher       = false
+  },
+  "2" = {
+    name                  = "worker03"
+    server_type           = "cx21"
+    private_ip_address    = "10.0.0.22"
+    install_rancher       = false
   },
 }
