@@ -79,6 +79,55 @@ The `core` cluster is provisioned like other clusters, runs an extra ansible scr
 
 After the `core` cluster has been created, an API token should be created, to manage new clusters from Terraform.
 
+## Quick start
+
+Create configuration files:
+
+```bash
+cp ansible/group_vars/all/vars.yml.example ansible/group_vars/all/vars.yml
+cp terraform/clusters/core/terraform.tfvars.example terraform/clusters/core/terraform.tfvars
+cp terraform/clusters/default/terraform.tfvars.example terraform/clusters/default/terraform.tfvars
+```
+
+Fill in configurations in the three files.
+
+Start the core setup:
+
+```bash
+cd terraform/clusters/core
+terraform init
+terraform apply
+```
+
+Review the result, and confirm with `yes`.
+
+Open the newly provisioned Rancher2 instance, and create an API token, insert it into the `terraform/clusters/default/terraform.tfvars` configuration along with the Rancher url.
+
+Start the k8s cluster setup:
+
+```bash
+cd terraform/clusters/default
+terraform init
+terraform apply
+```
+
+Review the result, and confirm with `yes`.
+
+A kubernetes cluster will now be provisioned, registered with Rancher.
+
+Copy the `kube_config` from the Rancher UI to your local config, and test the connection by fetching the nodes:
+
+```bash
+kubectl config use-context <cluster-name>
+kubectl get nodes -o=wide
+```
+
+`kubectl` is now be ready to go!
+
+### Provisioning In-Cluster
+
+To be written.
+
 ## Inspirations
 
 Light Hosting Kube is the third iteration of my personal hosting setup.
