@@ -9,13 +9,17 @@ ssh_public_key      = "~/.ssh/id_rsa.pub"
 ssh_public_key_name = "personal"
 
 # Hetzner configuration
-hcloud_token = "API-TOKEN"
+hcloud_token          = "API-TOKEN"
 hcloud_manage_ssh_key = false
 
 # Cloudflare configuration
 cloudflare_email    = "admin@example.com"
 cloudflare_api_key  = "API-KEY"
 cloudflare_zone_id  = "ZONE-ID" # Zone ID of domain in Cloudflare
+
+# Rancher Agent configuration
+rancher_api_url       = "https://rancher.core.cluster.example.com"
+rancher_bearer_token  = "BEARER-TOKEN"
 
 # Server definition
 servers = {
@@ -24,17 +28,23 @@ servers = {
     server_type           = "cx21"
     private_ip_address    = "10.0.0.20"
     install_rancher       = false
+    install_rancher_agent = true
+    rancher_agent_roles   = "--etcd --controlplane --worker"
   },
   "1" = {
     name                  = "worker02"
     server_type           = "cx21"
     private_ip_address    = "10.0.0.21"
     install_rancher       = false
+    install_rancher_agent = true
+    rancher_agent_roles   = "--etcd --controlplane --worker"
   },
   "2" = {
     name                  = "worker03"
     server_type           = "cx21"
     private_ip_address    = "10.0.0.22"
     install_rancher       = false
+    install_rancher_agent = true
+    rancher_agent_roles   = "--etcd --controlplane --worker"
   },
 }

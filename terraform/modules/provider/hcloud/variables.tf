@@ -31,3 +31,8 @@ variable "hcloud_network_ip_range" {
 variable "hcloud_network_zone" {
   default = "eu-central"
 }
+
+# Provider configuration - Rancher
+variable "rancher_agent_node_command" {
+  default = ""
+}

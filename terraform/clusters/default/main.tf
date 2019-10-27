@@ -12,16 +12,18 @@ terraform {
 module "provider" {
   source = "../../modules/provider/hcloud"
 
-  hcloud_token    = "${var.hcloud_token}"
+  hcloud_token          = "${var.hcloud_token}"
   hcloud_manage_ssh_key = "${var.hcloud_manage_ssh_key}"
   
-  cluster_name    = "${var.cluster_name}"
-  cluster_domain  = "${var.cluster_domain}"
+  cluster_name                = "${var.cluster_name}"
+  cluster_domain              = "${var.cluster_domain}"
   cluster_enable_floating_ip  = "${var.cluster_enable_floating_ip}"
-  servers         = "${var.servers}"
+  servers                      = "${var.servers}"
 
   ssh_public_key        = "${var.ssh_public_key}"
   ssh_public_key_name   = "${var.ssh_public_key_name}"
+
+  rancher_agent_node_command = "${module.k8s.rancher_agent_node_command}"
 }
 
 # Provision DNS
@@ -32,9 +34,9 @@ module "dns" {
   cloudflare_api_key  = "${var.cloudflare_api_key}"
   cloudflare_zone_id  = "${var.cloudflare_zone_id}"
   
-  cluster_domain  = "${var.cluster_domain}"
+  cluster_domain              = "${var.cluster_domain}"
   cluster_enable_floating_ip  = "${var.cluster_enable_floating_ip}"
-  servers         = "${var.servers}"
+  servers                     = "${var.servers}"
 
   server_ips      = "${module.provider.server_ips}"
   floating_ip     = "${module.provider.floating_ip}"
@@ -49,4 +51,14 @@ module "ansible_inventory" {
   servers         = "${var.servers}"
   server_ips      = "${module.provider.server_ips}"
   floating_ip     = "${module.provider.floating_ip}"
+}
+
+# Provision Rancher2 Agents
+module "k8s" {
+  source = "../../modules/k8s/rancher2-agent"
+  
+  rancher_api_url       = "${var.rancher_api_url}"
+  rancher_bearer_token  = "${var.rancher_bearer_token}"
+
+  cluster_name    = "${var.cluster_name}"
 }

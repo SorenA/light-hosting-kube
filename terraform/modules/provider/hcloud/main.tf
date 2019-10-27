@@ -56,7 +56,19 @@ resource "hcloud_server" "node" {
 
   # Install Rancher if server is configured so
   provisioner "local-exec" {
-    command = "${lookup(element(values(var.servers), count.index), "install_rancher") == true ? "cd ${path.root}/../../../ansible/ && ANSIBLE_CONFIG=ansible.cfg ansible-playbook -i '${self.ipv4_address},' --extra-vars 'rancher_ip_address=${self.ipv4_address} rancher_domain_name=${lookup(element(values(var.servers), count.index), "name")}.${var.cluster_domain}' provision-rancher2.yml" : ""}"
+    command = "${lookup(element(values(var.servers), count.index), "install_rancher") == true ? "cd ${path.root}/../../../ansible/ && ANSIBLE_CONFIG=ansible.cfg ansible-playbook -i '${self.ipv4_address},' --extra-vars 'rancher_ip_address=${self.ipv4_address} rancher_domain_name=${lookup(element(values(var.servers), count.index), "name")}.${var.cluster_domain}' provision-rancher2.yml" : "sleep 0"}"
+  }
+
+  # Install Rancher Agent if server is configured so
+  provisioner "remote-exec" {
+    inline = [
+      "${lookup(element(values(var.servers), count.index), "install_rancher_agent") == true ? "${var.rancher_agent_node_command} ${lookup(element(values(var.servers), count.index), "rancher_agent_roles")} --address ${self.ipv4_address} --internal-address ${lookup(element(values(var.servers), count.index), "private_ip_address")}" : "sleep 0"}",
+    ]
+
+    connection {
+      host        = "${self.ipv4_address}"
+      user        = "deploy"
+    }
   }
 }
 

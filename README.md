@@ -89,4 +89,4 @@ After having read [Vito Botta](https://github.com/vitobotta)'s article [From zer
 
 Harden Linux Ansible role was inspired by [Githubixx's ansible-role-harden-linux](https://github.com/githubixx/ansible-role-harden-linux).
 
-Rancher Ansible role was inspired by [Sylflo's rancher2-ansible](https://github.com/sylflo-ansible-kubernetes/rancher2-ansible)
+Rancher Ansible role was inspired by [Sylflo's rancher2-ansible](https://github.com/sylflo-ansible-kubernetes/rancher2-ansible).

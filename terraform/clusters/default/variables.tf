@@ -23,3 +23,8 @@ variable "hcloud_manage_ssh_key" {}
 variable "cloudflare_email" {}
 variable "cloudflare_api_key" {}
 variable "cloudflare_zone_id" {}
+
+# Provider configuration - Rancher2 Agent
+
+variable "rancher_api_url" {}
+variable "rancher_bearer_token" {}
