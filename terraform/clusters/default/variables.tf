@@ -2,6 +2,7 @@
 
 variable "cluster_name" {}
 variable "cluster_domain" {}
+variable "cluster_enable_floating_ip" {}
 variable "servers" {}
 
 # SSH configuration

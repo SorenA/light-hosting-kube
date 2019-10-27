@@ -16,6 +16,7 @@ module "provider" {
   
   cluster_name    = "${var.cluster_name}"
   cluster_domain  = "${var.cluster_domain}"
+  cluster_enable_floating_ip  = "${var.cluster_enable_floating_ip}"
   servers         = "${var.servers}"
 
   ssh_public_key        = "${var.ssh_public_key}"
@@ -31,6 +32,7 @@ module "dns" {
   cloudflare_zone_id  = "${var.cloudflare_zone_id}"
   
   cluster_domain  = "${var.cluster_domain}"
+  cluster_enable_floating_ip  = "${var.cluster_enable_floating_ip}"
   servers         = "${var.servers}"
 
   server_ips      = "${module.provider.server_ips}"
