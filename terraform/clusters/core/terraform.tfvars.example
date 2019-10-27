@@ -1,0 +1,30 @@
+# Cluster configuration
+cluster_name                = "core"
+cluster_domain              = "core.cluster.example.com"
+cluster_enable_floating_ip  = true
+
+# SSH configuration
+ssh_private_key     = "~/.ssh/id_rsa"
+ssh_public_key      = "~/.ssh/id_rsa.pub"
+ssh_public_key_name = "personal"
+
+# Hetzner configuration
+hcloud_token = "API-TOKEN"
+
+# Cloudflare configuration
+cloudflare_email    = "admin@example.com"
+cloudflare_api_key  = "API-KEY"
+cloudflare_zone_id  = "ZONE-ID" # Zone ID of domain in Cloudflare
+
+# Rancher configuration
+rancher_default_password = "PASSWORD"
+
+# Server definition
+servers = {
+  "0" = {
+    name                  = "rancher"
+    server_type           = "cx11"
+    private_ip_address    = "10.0.0.2"
+    install_rancher       = true
+  },
+}
