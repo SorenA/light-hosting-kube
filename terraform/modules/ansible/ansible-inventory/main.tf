@@ -20,6 +20,7 @@ resource "local_file" "ansible_vars" {
     content     = <<EOF
 ---
 floating_ip: ${var.floating_ip}
+private_network: ${var.private_network}
 ${length(local.rancher_domain_names) > 0 ? "rancher_domain_name: ${local.rancher_domain_names.0}" : ""}
 ${length(local.rancher_ips) > 0 ? "rancher_ip_address: ${local.rancher_ips.0}" : ""}
     EOF

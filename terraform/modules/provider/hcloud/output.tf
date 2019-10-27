@@ -4,3 +4,6 @@ output "server_ips" {
 output "floating_ip" {
   value = "${var.cluster_enable_floating_ip && length(hcloud_floating_ip.default) > 0 ? hcloud_floating_ip.default.0.ip_address : ""}"
 }
+output "private_network" {
+  value = "${hcloud_network.default.name}"
+}

@@ -49,4 +49,5 @@ module "ansible_inventory" {
   servers         = "${var.servers}"
   server_ips      = "${module.provider.server_ips}"
   floating_ip     = "${module.provider.floating_ip}"
+  private_network = "${module.provider.private_network}"
 }
