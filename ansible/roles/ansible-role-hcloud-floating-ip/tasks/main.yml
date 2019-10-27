@@ -3,8 +3,10 @@
   template:
     src: "etc/network/interfaces.d/60-hcloud-floating-ip.cfg"
     dest: "/etc/network/interfaces.d/60-hcloud-floating-ip.cfg"
+  when: floating_ip is defined
 
 - name: Restart networking
   service:
     name: networking
     state: restarted
+  when: floating_ip is defined
