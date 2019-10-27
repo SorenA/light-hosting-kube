@@ -35,6 +35,9 @@ resource "rancher2_cluster" "default" {
           retention      = 28
         }
       }
+      kube_api {
+        service_cluster_ip_range = "10.244.0.0/16"
+      }
 
       kubelet {
         extra_args = {

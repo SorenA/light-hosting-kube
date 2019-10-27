@@ -9,3 +9,12 @@ ssh_public_keys:
 
 # Rancher
 rancher_admin_password: RAW-PASSWORD
+
+# Networking
+harden_ufw_allow_networks:
+  - "10.0.0.0/8" # Private network
+
+harden_sshguard_whitelist:
+  - "127.0.0.0/8"
+  - "::1/128"
+  - "10.0.0.0/8" # Private network
