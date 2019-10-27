@@ -80,6 +80,15 @@ The solution was to add a `core` cluster, where the Rancher node lives, and then
 
 The `core` cluster is provisioned like other clusters, but utilizes the `rancher2` module instead of the `rancher2-agent` module.
 
+When provisioning the Rancher node, the boostrap may fail due to the server not being ready - awaiting a LetsEncrypt cert. This is nothing to worry about, another `terraform plan` will rectify this, the error looks like this:
+
+```log
+Error: [ERROR] Login with admin user: Post https://rancher.core.cluster.example.com/v3-public/localProviders/local?action=login: dial tcp 1.1.1.1:443: connect: connection refused
+
+  on ../../modules/k8s/rancher2/main.tf line 13, in resource "rancher2_bootstrap" "default":
+  13: resource "rancher2_bootstrap" "default" {
+```
+
 ## Inspirations
 
 Light Hosting Kube is the third iteration of my personal hosting setup.
