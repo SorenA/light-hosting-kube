@@ -62,7 +62,7 @@ resource "hcloud_server" "node" {
   # Install Rancher Agent if server is configured so
   provisioner "remote-exec" {
     inline = [
-      "${lookup(element(values(var.servers), count.index), "install_rancher_agent") == true ? "${var.rancher_agent_node_command} ${lookup(element(values(var.servers), count.index), "rancher_agent_roles")} --address ${self.ipv4_address} --internal-address ${lookup(element(values(var.servers), count.index), "private_ip_address")}" : "sleep 0"}",
+      "${lookup(element(values(var.servers), count.index), "install_rancher_agent") == true ? "${var.rancher_agent_node_command} ${lookup(element(values(var.servers), count.index), "rancher_agent_roles")} --internal-address ${lookup(element(values(var.servers), count.index), "private_ip_address")}" : "sleep 0"}",
     ]
 
     connection {

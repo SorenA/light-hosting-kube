@@ -19,7 +19,7 @@ resource "rancher2_cluster" "default" {
     network {
       plugin = "canal"
       canal_network_provider {
-        iface = "eth0"
+        iface = "ens10"
       }
     }
 
@@ -35,8 +35,9 @@ resource "rancher2_cluster" "default" {
           retention      = 28
         }
       }
-      kube_api {
-        service_cluster_ip_range = "10.244.0.0/16"
+
+      kube_controller {
+        cluster_cidr = "10.244.0.0/16"
       }
 
       kubelet {
