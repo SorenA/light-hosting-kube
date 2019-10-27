@@ -1,0 +1,20 @@
+---
+- name: Apply namespace
+  k8s:
+    state: present
+    definition: "{{ lookup('template', '00-namespace.yml') }}"
+
+- name: Apply CRDs
+  k8s:
+    state: present
+    definition: "{{ lookup('template', '01-crd.yml') }}"
+
+- name: Apply RBAC
+  k8s:
+    state: present
+    definition: "{{ lookup('template', '02-rbac.yml') }}"
+
+- name: Apply Daemon Set
+  k8s:
+    state: present
+    definition: "{{ lookup('template', '03-daemon-set.yml') }}"

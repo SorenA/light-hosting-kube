@@ -5,3 +5,4 @@
 *.retry
 ansible/group_vars/all/vars.yml
 ansible/clusters/
+k8s/group_vars/all/vars.yml

@@ -128,6 +128,12 @@ kubectl get nodes -o=wide
 
 To be written.
 
+```bash
+cd k8s
+ansible-playbook --extra-vars "@../ansible/clusters/default/vars.yml" provision-k8s.yml
+```
+
+
 ## Inspirations
 
 Light Hosting Kube is the third iteration of my personal hosting setup.

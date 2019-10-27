@@ -1,0 +1,42 @@
+---
+kind: DaemonSet
+apiVersion: extensions/v1beta1
+
+metadata:
+  name: traefik-ingress-controller
+  namespace: traefik
+  labels:
+    k8s-app: traefik-ingress-controller
+spec:
+  template:
+    metadata:
+      labels:
+        k8s-app: traefik-ingress-controller
+        name: traefik-ingress-controller
+    spec:
+      serviceAccountName: traefik-ingress-controller
+      hostNetwork: true
+      terminationGracePeriodSeconds: 60
+      containers:
+        - name: traefik
+          image: traefik:v2.0
+          args:
+            - --api
+            - --api.insecure
+            - --api.dashboard
+            - --entryPoints.http.address=:80
+            - --entryPoints.https.address=:443
+            - --providers.kubernetescrd
+            - --providers.kubernetesingress=true
+            - --ping
+            - --accesslog=true
+            - --log=true
+          ports:
+            - name: http
+              containerPort: 80
+              hostPort: 80
+            - name: https
+              containerPort: 443
+              hostPort: 443
+            - name: dashboard
+              containerPort: 8080
