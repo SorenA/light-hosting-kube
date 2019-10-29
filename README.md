@@ -126,13 +126,21 @@ kubectl get nodes -o=wide
 
 ### Provisioning In-Cluster
 
-To be written.
+In order to get a cluster up and running fast, an extra Ansible playbook is provided, for provisioning services in-cluster.
+
+- Deploy [Hetzner Cloud Controller](https://github.com/hetznercloud/hcloud-cloud-controller-manager)
+- Deploy [Hetzner CSI Driver](https://github.com/hetznercloud/csi-driver) - Container Storage Interface for persistent volumes
+- Deploy [cbeneke's Hetzner FIP controller v0.1.0](https://github.com/cbeneke/hcloud-fip-controller) - Assigns the cluster floating IP to the node running the controller, effectively keeping the cluster resources HA
+- Deploy [Jetstack cert-manager](https://github.com/jetstack/cert-manager)
+- Deploy [Traefik](https://github.com/containous/traefik/)
+- Deploy Traefik Dashboard - with LetsEncrypt cert available on traefik.(cluster-domain), eg. traefik.default.cluster.example.com
+
+Running the playbook requires the Ansible variables that Terraform generates.
 
 ```bash
 cd k8s
 ansible-playbook --extra-vars "@../ansible/clusters/default/vars.yml" provision-k8s.yml
 ```
-
 
 ## Inspirations
 
