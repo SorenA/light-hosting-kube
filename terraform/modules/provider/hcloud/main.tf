@@ -21,12 +21,12 @@ data "hcloud_ssh_key" "default" {
 resource "hcloud_server" "node" {
   // for_each with provisioner using self causes Terraform to crash in v0.12.12: https://github.com/hashicorp/terraform/issues/23191
   //for_each = "${var.servers}"
-  //name        = "${each.value.name}.${var.cluster_domain}"
+  //name        = "${var.cluster_name}-${each.value.name}"
   //server_type = "${each.value.server_type}"
 
   // Provision using count instead
   count       = "${length(values(var.servers))}"
-  name        = "${lookup(element(values(var.servers), count.index), "name")}.${var.cluster_domain}"
+  name        = "${var.cluster_name}-${lookup(element(values(var.servers), count.index), "name")}"
   server_type = "${lookup(element(values(var.servers), count.index), "server_type")}"
 
   image       = "${var.hcloud_image}"
@@ -36,12 +36,13 @@ resource "hcloud_server" "node" {
 
   labels = {
     cluster = "${var.cluster_name}"
+    domain = "${lookup(element(values(var.servers), count.index), "name")}.${var.cluster_domain}"
   }
 
-  # Set hostname
+  # Wait for server to boot fully
   provisioner "remote-exec" {
     inline = [
-      "sudo hostnamectl set-hostname ${self.name}",
+      "echo Ready for ansible",
     ]
 
     connection {
@@ -62,7 +63,7 @@ resource "hcloud_server" "node" {
   # Install Rancher Agent if server is configured so
   provisioner "remote-exec" {
     inline = [
-      "${lookup(element(values(var.servers), count.index), "install_rancher_agent") == true ? "${var.rancher_agent_node_command} ${lookup(element(values(var.servers), count.index), "rancher_agent_roles")} --internal-address ${lookup(element(values(var.servers), count.index), "private_ip_address")}" : "sleep 0"}",
+      "${lookup(element(values(var.servers), count.index), "install_rancher_agent") == true ? "${var.rancher_agent_node_command} --internal-address ${lookup(element(values(var.servers), count.index), "private_ip_address")} --address ${self.ipv4_address} ${lookup(element(values(var.servers), count.index), "rancher_agent_roles")}" : "sleep 0"}",
     ]
 
     connection {
@@ -77,11 +78,12 @@ resource "hcloud_floating_ip" "default" {
   count = "${var.cluster_enable_floating_ip ? 1 : 0}" # Only if floating ip is enabled
 
   type          = "ipv4"
-  description   = "${var.cluster_domain}"
+  description   = "${var.cluster_name}"
   home_location = "${var.hcloud_location}"
 
   labels = {
     cluster = "${var.cluster_name}"
+    domain = "${var.cluster_domain}"
   }
 }
 resource "hcloud_floating_ip_assignment" "default" {
@@ -97,7 +99,7 @@ resource "hcloud_rdns" "node" {
 
   server_id       = "${lookup(hcloud_server.node[each.key], "id")}"
   ip_address      = "${lookup(hcloud_server.node[each.key], "ipv4_address")}"
-  dns_ptr         = "${lookup(hcloud_server.node[each.key], "name")}"
+  dns_ptr         = "${each.value.name}.${var.cluster_domain}"
 }
 resource "hcloud_rdns" "floating_ip_default" {
   count = "${var.cluster_enable_floating_ip ? 1 : 0}" # Only if floating ip is enabled
