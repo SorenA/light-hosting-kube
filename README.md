@@ -34,6 +34,8 @@ Copy the `terraform.tfvars.example` as `terraform.tfvars` to configure the clust
 
 Terraform actions such as `terraform init` and `terraform apply` should be executed with the cluster directory as working directory.
 
+**Server and cluster names with dots in them are not supported, due to not being supported by the Hetzner Cloud Controller.**
+
 ## Cluster naming and DNS entries
 
 A cluster is given a name and domain trough the configuration, the name is used for naming and tagging resources.
