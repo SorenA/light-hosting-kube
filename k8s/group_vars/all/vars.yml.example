@@ -3,3 +3,6 @@ cert_manager_letsencrypt_email: admin@example.com
 
 # Hetzner Cloud
 hcloud_token: API-TOKEN
+
+# Traefik Dashboard
+traefik_dashboard_users: BASE64 # Base64 encoded .htpasswd

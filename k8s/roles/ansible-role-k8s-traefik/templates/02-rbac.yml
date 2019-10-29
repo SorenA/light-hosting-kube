@@ -75,7 +75,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: traefik-ingress-controller
-    namespace: ingress
+    namespace: traefik
 
 ---
 apiVersion: v1

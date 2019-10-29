@@ -1,0 +1,21 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+
+metadata:
+  name: traefik-dashboard-auth-middleware
+  namespace: traefik
+spec:
+  basicAuth:
+    secret: traefik-dashboard-auth-secret
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+
+metadata:
+  name: redirect-https
+  namespace: traefik
+spec:
+  redirectScheme:
+    scheme: https

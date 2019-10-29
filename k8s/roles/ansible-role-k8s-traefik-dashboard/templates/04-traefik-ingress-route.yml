@@ -1,0 +1,41 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+
+metadata:
+  name: traefik-dashboard-http # Redirect to HTTPS
+  namespace: traefik
+spec:
+  entryPoints:
+    - http
+  routes:
+  - match: Host(`traefik.{{ cluster_domain }}`) && PathPrefix(`/`)
+    kind: Rule
+    middlewares:
+      - name: redirect-https
+    services:
+      - name: traefik-dashboard
+        namespace: traefik
+        port: 8080
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+
+metadata:
+  name: traefik-dashboard-https
+  namespace: traefik
+spec:
+  entryPoints:
+    - https
+  tls:
+    secretName: traefik-dashboard-cert
+  routes:
+  - match: Host(`traefik.{{ cluster_domain }}`) && PathPrefix(`/`)
+    kind: Rule
+    middlewares:
+      - name: traefik-dashboard-auth-middleware
+    services:
+      - name: traefik-dashboard
+        namespace: traefik
+        port: 8080
