@@ -120,7 +120,7 @@ resource "hcloud_network_subnet" "default" {
   network_id    = "${hcloud_network.default.id}"
   type          = "server"
   network_zone  = "${var.hcloud_network_zone}"
-  ip_range      = "${var.hcloud_network_ip_range}"
+  ip_range      = "${var.hcloud_network_subnet_ip_range}"
 }
 resource "hcloud_server_network" "node" {
   for_each = "${var.servers}"

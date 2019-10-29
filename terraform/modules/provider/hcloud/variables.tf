@@ -28,6 +28,9 @@ variable "hcloud_backups" {
 variable "hcloud_network_ip_range" {
   default = "10.0.0.0/8"
 }
+variable "hcloud_network_subnet_ip_range" {
+  default = "10.0.0.0/16"
+}
 variable "hcloud_network_zone" {
   default = "eu-central"
 }
