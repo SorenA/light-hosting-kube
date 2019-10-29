@@ -21,6 +21,8 @@ resource "local_file" "ansible_vars" {
 ---
 floating_ip: ${var.floating_ip}
 private_network: ${var.private_network}
+cluster_name: ${var.cluster_name}
+cluster_domain: ${var.cluster_domain}
 ${length(local.rancher_domain_names) > 0 ? "rancher_domain_name: ${local.rancher_domain_names.0}" : ""}
 ${length(local.rancher_ips) > 0 ? "rancher_ip_address: ${local.rancher_ips.0}" : ""}
     EOF
