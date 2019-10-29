@@ -67,7 +67,7 @@
     status_code: 200
 
 - name: Stop Rancher2 setup-container
-  command: docker stop rancher2-setup
+  command: docker stop --time=30 rancher2-setup
   ignore_errors: true
 
 - name: Dispose of Rancher2 setup-container

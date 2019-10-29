@@ -1,9 +1,9 @@
 ---
-- name: reload ufw
+- name: Reload ufw
   ufw:
     state: reloaded
 
-- name: restart ssh
+- name: Restart ssh
   service:
     name: ssh
     state: restarted

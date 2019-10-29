@@ -36,7 +36,7 @@
     regexp: "{{ item }}"
     line: "{{ harden_sshd_config[item] }}"
     state: "present"
-  notify: "restart ssh"
+  notify: "Restart ssh"
   with_items:
     - "{{ harden_sshd_config | list }}"
 
@@ -54,7 +54,7 @@
     regexp: "{{ item }}"
     line: "{{ harden_ufw_defaults[item] }}"
     state: present
-  notify: "reload ufw"
+  notify: "Reload ufw"
   with_items:
     - "{{ harden_ufw_defaults | list }}"
 
