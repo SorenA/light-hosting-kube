@@ -1,0 +1,25 @@
+---
+- name: Apply namespace
+  k8s:
+    state: present
+    definition: "{{ lookup('template', '00-namespace.yml') }}"
+
+- name: Apply secret
+  k8s:
+    state: present
+    definition: "{{ lookup('template', '01-secret.yml') }}"
+
+- name: Apply config map
+  k8s:
+    state: present
+    definition: "{{ lookup('template', '02-config-map.yml') }}"
+
+- name: Apply RBAC
+  k8s:
+    state: present
+    definition: "{{ lookup('template', '03-rbac.yml') }}"
+
+- name: Apply deployment
+  k8s:
+    state: present
+    definition: "{{ lookup('template', '04-deployment.yml') }}"
