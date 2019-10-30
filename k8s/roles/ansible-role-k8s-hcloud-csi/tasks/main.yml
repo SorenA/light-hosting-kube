@@ -14,7 +14,6 @@
   register: output
 - debug: msg={{ output.stdout_lines }}
 
-
 - name: Apply Hetzner CSI v1.13
   shell: kubectl apply -f https://raw.githubusercontent.com/hetznercloud/csi-driver/master/deploy/kubernetes/hcloud-csi.yml
   register: output

@@ -1,6 +1,6 @@
 # Light Hosting Kube
 
-Automated Kubernetes setup using Hetzner Cloud, Cloudflare, Terraform, Ansible &amp; Rancher.
+An opinionated Kubernetes setup using Hetzner Cloud, Cloudflare, Terraform, Ansible &amp; Rancher.
 
 ## Requirements
 
@@ -126,6 +126,10 @@ kubectl get nodes -o=wide
 
 `kubectl` is now be ready to go!
 
+### Monitoring
+
+Post setup, the monitoring init operator may not be able to start up, and the cluster may report `Monitoring API is not ready` in the Rancher UI. This can be fixed by heading to the Monitoring section, disabling the monitoring and enabling it again.
+
 ### Provisioning In-Cluster
 
 In order to get a cluster up and running fast, an extra Ansible playbook is provided, for provisioning services in-cluster.
@@ -147,15 +151,24 @@ ansible-playbook --extra-vars "@../ansible/clusters/default/vars.yml" provision-
 
 #### Kubernetes Dashboard
 
-The dashboard can be accessed through `kubectl proxy` using the url as follows:
+The dashboard can be accessed through the following urls:
+
+Over HTTPS:
 
 ```env
-http://localhost:8001/k8s/clusters/<CLUSTER ID>/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
+https://<core-rancher-url>/k8s/clusters/<CLUSTER ID>/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
+```
+
+Using kubectl:
+
+```env
+Through Rancher:    http://localhost:8001/k8s/clusters/<CLUSTER ID>/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
+Through worker:     http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
 ```
 
 The cluster ID is the ID attached by Rancher on cluster creation, looking something like this: c-heka4
 
-The access token needed to sign in can be fetched using 
+The access token needed to sign in can be fetched using:
 
 ```bash
 kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep kubernetes-dashboard-user | awk '{print $1}')
@@ -165,9 +178,11 @@ kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | gre
 
 Light Hosting Kube is the third iteration of my personal hosting setup.
 
-The previous iteration used terraform and ansible to provision, harden and configure a Kubernetes cluster hosted with Hetzner. It included a lot of manual work, managing the servers and ansible roles.
+The previous iteration used Terraform and Ansible to provision, harden and configure a Kubernetes cluster hosted with Hetzner, using WireGuard for inter-node connections, as Hetzners networks wasn't out at the time. It included a lot of steps to setup and manage, which led to the cluster not being treated as immutable, as setting up a new was a time consuming task.
 
 After having read [Vito Botta](https://github.com/vitobotta)'s article [From zero to Kubernetes in Hetzner Cloud with Terraform, Ansible and Rancher](https://vitobotta.com/2019/10/14/kubernetes-hetzner-cloud-terraform-ansible-rancher/) where he used Rancher to configure the Kubernetes cluster, I wanted to recreate my setup in a similar fashion, using Ubuntu servers, and adding Cloudflare DNS on top.
+
+A cluster can be booted up in under 15 minutes, and town down in a fraction of that, allowing spinning up new clusters for testing, development and seperating workloads.
 
 Harden Linux Ansible role was inspired by [Githubixx's ansible-role-harden-linux](https://github.com/githubixx/ansible-role-harden-linux).
 

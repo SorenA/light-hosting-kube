@@ -17,8 +17,8 @@ resource "rancher2_cluster" "default" {
 
   rke_config {
     network {
-      plugin = "flannel"
-      flannel_network_provider {
+      plugin = "canal"
+      canal_network_provider {
         iface = "ens10"
       }
     }
