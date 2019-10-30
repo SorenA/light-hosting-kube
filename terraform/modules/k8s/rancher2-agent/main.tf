@@ -14,6 +14,7 @@ resource "rancher2_cluster" "default" {
   }
   enable_cluster_alerting = true
   enable_cluster_monitoring = true
+  enable_network_policy = true
 
   rke_config {
     network {
