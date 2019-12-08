@@ -12,6 +12,42 @@ An opinionated Kubernetes setup using Hetzner Cloud, Cloudflare, Terraform, Ansi
 
 The Azure backend can easily be swapped for S3 if needed, refer to Terraform manual.
 
+## Minimum viable cluster
+
+The clusters size may be anything from one to many nodes, a one node cluster is valid, but not the best solution due to having a single point of failure, which kind of defeats the point in using Kubernetes for production loads.
+
+In this setup, the minimum recommended cluster is the following
+
+### Rancher management cluster - `core` cluster
+
+One node of any size, this cluster doesn't receive any traffic, and is only used for managing the other clusters. Even with multiple workload clusters, only one management cluster is needed.
+
+At Hetzner, the CX11 node is recommended with 1 vCPU and 2 GB RAM. This is also the cheapest node at €2.49. Feel free to pick any size, this one however, is enough.
+
+A floating IP is optional for this cluster.
+
+### Kubernetes workload clusters
+
+For a workload cluster receiving production traffic, there shouldn't be a single point of failure anywhere, this means we need to utilize a floating IP for dynamic ingress routing and multiple nodes configured with both etcd, Kubernetes controlplanes and Kubernetes workers.
+
+In the optimal setup, three servers would run etcd and controlplanes, with at least three other servers running as workers, however for the minimum viable cluster we can put these on the same three nodes, without sacrificing High Availability.
+
+The sizes of the nodes, and the number of them is highly dependant on the workloads being run.
+
+At Hetzner, three CX21 nodes are recommended, each with 2vCPUs and 4 GB RAM. These are priced at €4.90 each, giving a total of €14.70 for compute.
+
+A floating IP is required for these clusters, adding €1.00 to the bill.
+
+### Billing summary
+
+Multiple workload clusters can be run on the same Rancher management cluster, and the workload clusters can of course contain more nodes and bigger nodes.
+
+This however gives a total cost of running a minimum viable production cluster with proper HA €18.19, or roughly $20, using the following resources at Hetzner:
+
+1x CX11 node for rancher management cluster  
+3x CX21 node for workload cluster  
+1x Floating IP for workload cluster  
+
 ## Structure
 
 The solution is made up of modules and clusters.
