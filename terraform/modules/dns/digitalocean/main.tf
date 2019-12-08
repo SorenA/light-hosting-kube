@@ -22,7 +22,7 @@ resource "digitalocean_record" "floating_ip" {
 
   domain   = digitalocean_domain.default.name
   type     = "A"
-  name     = var.cluster_domain
+  name     = "@"
   value    = var.floating_ip
   ttl      = 600
 }
@@ -32,7 +32,7 @@ resource "digitalocean_record" "cluster_cname" {
 
   domain   = digitalocean_domain.default.name
   type     = "CNAME"
-  name     = var.cluster_domain
-  value    = var.cluster_domain
+  name     = "*."
+  value    = "@"
   ttl      = 600
 }
