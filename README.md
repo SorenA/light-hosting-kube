@@ -89,6 +89,20 @@ worker02.default.cluster.example.com    >   Node: worker02
 
 Reverse DNS entries will also be added to the Floating IP and nodes at Hetzner matching the above.
 
+## SSH keys
+
+This setup requires the SSH keys being used to be added to your systems SSH agent as recommended by HashiCorp. See [GitHub issue reply](https://github.com/hashicorp/terraform/issues/13734#issuecomment-294848530).
+
+The underlying reason is that loading the private key contents in not supported on encrypted keys. Suggesting the use of unencrypted keys is not something this setup wants to do.
+
+However, if it's a requirement to use SSH keys not in the agent, the following line may be added to the remote-exec blocks in the hcloud provider main file: `terraform/modules/provider/hcloud/main.tf`
+
+```HCL
+private_key = file(var.ssh_private_key)
+```
+
+It is however recommend to use the SSH agent if possible.
+
 ## Setup
 
 ### Ansible
