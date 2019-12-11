@@ -1,9 +1,9 @@
 output "server_ips" {
-  value = {for key, value in var.servers : key => "${lookup(hcloud_server.node[key], "ipv4_address")}"}
+  value = {for key, value in var.servers : key => lookup(hcloud_server.node[key], "ipv4_address")}
 }
 output "floating_ip" {
-  value = "${var.cluster_enable_floating_ip && length(hcloud_floating_ip.default) > 0 ? hcloud_floating_ip.default.0.ip_address : ""}"
+  value = var.cluster_enable_floating_ip && length(hcloud_floating_ip.default) > 0 ? hcloud_floating_ip.default.0.ip_address : ""
 }
 output "private_network" {
-  value = "${hcloud_network.default.name}"
+  value = hcloud_network.default.name
 }
