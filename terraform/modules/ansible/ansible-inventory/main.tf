@@ -4,7 +4,7 @@ provider "local" {
 
 locals {
   rancher_domain_names = [for key, value in var.servers: "${value.name}.${var.cluster_domain}" if value.install_rancher]
-  rancher_ips = [for key, value in var.servers: "${var.server_ips[key]}" if value.install_rancher]
+  rancher_ips = [for key, value in var.servers: var.server_ips[key] if value.install_rancher]
 }
 
 # Create Ansible Inventory file

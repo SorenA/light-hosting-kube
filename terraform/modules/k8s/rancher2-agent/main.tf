@@ -1,13 +1,13 @@
 provider "rancher2" {
   version = "~> 1.6"
   
-  api_url     = "${var.rancher_api_url}"
-  token_key   = "${var.rancher_bearer_token}"
+  api_url     = var.rancher_api_url
+  token_key   = var.rancher_bearer_token
 }
 
 # Configure cluster
 resource "rancher2_cluster" "default" {
-  name = "${var.cluster_name}"
+  name = var.cluster_name
 
   cluster_auth_endpoint {
     enabled = true
@@ -24,7 +24,7 @@ resource "rancher2_cluster" "default" {
       }
     }
     
-    kubernetes_version = "${var.rancher_kubernetes_version}"
+    kubernetes_version = var.rancher_kubernetes_version
 
     ingress {
       provider = "none"
