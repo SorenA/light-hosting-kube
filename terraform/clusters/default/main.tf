@@ -58,8 +58,9 @@ module "ansible_inventory" {
 module "k8s" {
   source = "../../modules/k8s/rancher2-agent"
   
-  rancher_api_url       = "${var.rancher_api_url}"
-  rancher_bearer_token  = "${var.rancher_bearer_token}"
+  rancher_api_url             = "${var.rancher_api_url}"
+  rancher_bearer_token        = "${var.rancher_bearer_token}"
+  rancher_kubernetes_version  = "${var.rancher_kubernetes_version}"
 
   cluster_name    = "${var.cluster_name}"
 }

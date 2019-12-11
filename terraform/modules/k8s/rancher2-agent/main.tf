@@ -23,6 +23,8 @@ resource "rancher2_cluster" "default" {
         iface = "ens10"
       }
     }
+    
+    kubernetes_version = "${var.rancher_kubernetes_version}"
 
     ingress {
       provider = "none"

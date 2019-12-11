@@ -6,3 +6,6 @@ variable "cluster_name" {}
 
 variable "rancher_api_url" {}
 variable "rancher_bearer_token" {}
+variable "rancher_kubernetes_version" {
+  default = "v1.15.6-rancher1-2"
+}

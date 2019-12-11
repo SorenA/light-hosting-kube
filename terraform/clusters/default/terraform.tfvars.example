@@ -18,8 +18,9 @@ cloudflare_api_key  = "API-KEY"
 cloudflare_zone_id  = "ZONE-ID" # Zone ID of domain in Cloudflare
 
 # Rancher Agent configuration
-rancher_api_url       = "https://rancher.core.cluster.example.com"
-rancher_bearer_token  = "BEARER-TOKEN"
+rancher_api_url             = "https://rancher.core.cluster.example.com"
+rancher_bearer_token        = "BEARER-TOKEN"
+rancher_kubernetes_version  = "v1.15.6-rancher1-2"
 
 # Server definition
 servers = {
