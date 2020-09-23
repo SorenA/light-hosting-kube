@@ -1,15 +1,10 @@
 ---
-- name: Apply namespace
-  k8s:
-    state: present
-    definition: "{{ lookup('template', '00-namespace.yml') }}"
-
-- name: Apply cert-manager v0.9.1
-  shell: kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v0.9.1/cert-manager-no-webhook.yaml
+- name: Apply cert-manager v1.0.1
+  shell: kubectl --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v1.0.1/cert-manager.yaml
   register: output
 - debug: msg={{ output.stdout_lines }}
 
 - name: Apply cluster issuers
   k8s:
     state: present
-    definition: "{{ lookup('template', '01-cluster-issuer.yml') }}"
+    definition: "{{ lookup('template', '00-cluster-issuer.yml') }}"
