@@ -185,7 +185,7 @@ Post setup, the monitoring init operator may not be able to start up, and the cl
 
 In order to get a cluster up and running fast, an extra Ansible playbook is provided, for provisioning services in-cluster.
 
-- Deploy [Hetzner Cloud Controller](https://github.com/hetznercloud/hcloud-cloud-controller-manager)
+- Deploy [Hetzner Cloud Controller v1.7.0](https://github.com/hetznercloud/hcloud-cloud-controller-manager)
 - Deploy [Hetzner CSI Driver v1.4.0](https://github.com/hetznercloud/csi-driver) - Container Storage Interface for persistent volumes
 - Deploy [cbeneke's Hetzner FIP controller v0.3.5](https://github.com/cbeneke/hcloud-fip-controller) - Assigns the cluster floating IP to the node running the controller, effectively keeping the cluster resources HA
 - Deploy [Jetstack cert-manager](https://github.com/jetstack/cert-manager)
