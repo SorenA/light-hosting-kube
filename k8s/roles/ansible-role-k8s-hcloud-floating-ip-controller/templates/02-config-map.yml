@@ -8,6 +8,6 @@ metadata:
 data:
   config.json: |
     {
-      "hcloudFloatingIPs": [ "{{ floating_ip }}" ],
-      "nodeAddressType": "external"
+      "hcloud_floating_ips": [ "{{ floating_ip }}" ],
+      "node_address_type": "external"
     }

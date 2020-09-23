@@ -19,7 +19,7 @@
     state: present
     definition: "{{ lookup('template', '03-rbac.yml') }}"
 
-- name: Apply deployment
+- name: Apply daemon set
   k8s:
     state: present
-    definition: "{{ lookup('template', '04-deployment.yml') }}"
+    definition: "{{ lookup('template', '04-daemon-set.yml') }}"
