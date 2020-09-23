@@ -1,5 +1,5 @@
 provider "rancher2" {
-  version = "~> 1.6"
+  version = "~> 1.10.3"
   
   api_url     = var.rancher_api_url
   token_key   = var.rancher_bearer_token
