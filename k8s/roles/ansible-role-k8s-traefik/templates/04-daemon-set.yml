@@ -1,0 +1,72 @@
+---
+kind: DaemonSet
+apiVersion: extensions/v1beta1
+
+metadata:
+  name: traefik
+  namespace: traefik
+  labels:
+    app.kubernetes.io/name: traefik
+    app.kubernetes.io/instance: traefik
+spec:
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: traefik
+        app.kubernetes.io/instance: traefik
+    spec:
+      serviceAccountName: traefik
+      hostNetwork: true
+      terminationGracePeriodSeconds: 60
+      containers:
+        - name: traefik
+          image: traefik:v2.3.0
+          imagePullPolicy: IfNotPresent
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: 9000
+            failureThreshold: 1
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 2
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: 9000
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 2
+          securityContext:
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+            runAsGroup: 65532
+            runAsNonRoot: true
+            runAsUser: 65532
+          args:
+            - --api
+            - --api.insecure
+            - --api.dashboard
+            - --entryPoints.traefik.address=:9000/tcp
+            - --entryPoints.http.address=:80/tcp
+            - --entryPoints.https.address=:443/tcp
+            - --providers.kubernetescrd
+            - --providers.kubernetesingress
+            - --ping
+            - --accesslog=true
+            - --log=true
+          ports:
+            - name: traefik
+              containerPort: 9000
+              protocol: TCP
+            - name: http
+              containerPort: 80
+              hostPort: 80
+            - name: https
+              containerPort: 443
+              hostPort: 443

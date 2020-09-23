@@ -189,8 +189,7 @@ In order to get a cluster up and running fast, an extra Ansible playbook is prov
 - Deploy [Hetzner CSI Driver v1.4.0](https://github.com/hetznercloud/csi-driver) - Container Storage Interface for persistent volumes
 - Deploy [cbeneke's Hetzner FIP controller v0.3.5](https://github.com/cbeneke/hcloud-fip-controller) - Assigns the cluster floating IP to the node running the controller, effectively keeping the cluster resources HA
 - Deploy [Jetstack cert-manager v1.0.1](https://github.com/jetstack/cert-manager)
-- Deploy [Traefik](https://github.com/containous/traefik/)
-- Deploy Traefik Dashboard - with LetsEncrypt cert available on traefik.(cluster-domain), eg. traefik.default.cluster.example.com
+- Deploy [Traefik Proxy v2.3.0](https://github.com/traefik/traefik)
 - Deploy [Kubernetes Dashboard v2.0.4](https://github.com/kubernetes/dashboard) - available through `kubectl proxy`
 
 Running the playbook requires the Ansible variables that Terraform generates.
