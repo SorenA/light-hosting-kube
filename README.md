@@ -191,7 +191,7 @@ In order to get a cluster up and running fast, an extra Ansible playbook is prov
 - Deploy [Jetstack cert-manager](https://github.com/jetstack/cert-manager)
 - Deploy [Traefik](https://github.com/containous/traefik/)
 - Deploy Traefik Dashboard - with LetsEncrypt cert available on traefik.(cluster-domain), eg. traefik.default.cluster.example.com
-- Deploy [Kubernetes Dashboard v1.10.1](https://github.com/kubernetes/dashboard) - available through `kubectl proxy`
+- Deploy [Kubernetes Dashboard v2.0.4](https://github.com/kubernetes/dashboard) - available through `kubectl proxy`
 
 Running the playbook requires the Ansible variables that Terraform generates.
 
@@ -207,14 +207,14 @@ The dashboard can be accessed through the following urls:
 Over HTTPS:
 
 ```env
-https://<core-rancher-url>/k8s/clusters/<CLUSTER ID>/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
+https://<core-rancher-url>/k8s/clusters/<CLUSTER ID>/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
 ```
 
 Using kubectl:
 
 ```env
-Through Rancher:    http://localhost:8001/k8s/clusters/<CLUSTER ID>/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
-Through worker:     http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
+Through Rancher:    http://localhost:8001/k8s/clusters/<CLUSTER ID>/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+Through worker:     http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
 ```
 
 The cluster ID is the ID attached by Rancher on cluster creation, looking something like this: c-heka4
@@ -222,7 +222,7 @@ The cluster ID is the ID attached by Rancher on cluster creation, looking someth
 The access token needed to sign in can be fetched using:
 
 ```bash
-kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep kubernetes-dashboard-user | awk '{print $1}')
+kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get secret | grep kubernetes-dashboard-user | awk '{print $1}')
 ```
 
 ## Inspirations

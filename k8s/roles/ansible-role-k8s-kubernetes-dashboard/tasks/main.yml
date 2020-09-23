@@ -5,6 +5,6 @@
     definition: "{{ lookup('template', '00-rbac.yml') }}"
 
 - name: Apply Kubernetes Dashboard
-  shell: kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml
+  shell: kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.4/aio/deploy/recommended.yaml
   register: output
 - debug: msg={{ output.stdout_lines }}
