@@ -58,6 +58,7 @@ Modules are placed in the `/modules` directory, and implement different areas of
 
 - `provider/hcloud` - Provision servers with Hetzner Cloud
 - `dns/cloudflare` - Provision DNS with Cloudflare
+- `dns/digitalocean` - Provision DNS with DigitalOcean (by @lukaspj)
 - `ansible/ansible-inventory` - Provision Ansible Inventory files
 
 ### Clusters
