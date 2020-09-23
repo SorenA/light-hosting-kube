@@ -1,6 +1,6 @@
 ---
 - name: Launch Rancher2 in single-node mode with self-signed cert as setup container
-  command: docker run -d --name=rancher2-setup --restart=unless-stopped -v /opt/rancher:/var/lib/rancher -p 80:80 -p 443:443 rancher/rancher:latest
+  command: docker run -d --name=rancher2-setup --restart=unless-stopped -v /opt/rancher:/var/lib/rancher -p 80:80 -p 443:443 rancher/rancher:v2.4.8
   ignore_errors: true
 
 - name: Sign into Rancher2 with default password
@@ -75,5 +75,5 @@
   ignore_errors: true
 
 - name: Launch Rancher2 in single-node mode with LetsEncrypt cert
-  command: docker run -d --name=rancher2 --restart=unless-stopped -v /opt/rancher:/var/lib/rancher -p 80:80 -p 443:443 rancher/rancher:latest --acme-domain {{ rancher_domain_name }}
+  command: docker run -d --name=rancher2 --restart=unless-stopped -v /opt/rancher:/var/lib/rancher -p 80:80 -p 443:443 rancher/rancher:v2.4.8 --acme-domain {{ rancher_domain_name }}
   ignore_errors: true
