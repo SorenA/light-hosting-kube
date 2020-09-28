@@ -4,15 +4,15 @@
     state: present
     definition: "{{ lookup('template', '00-secret.yml') }}"
 
-#- name: Apply CRD - CSI Driver v1.13
-#  shell: kubectl apply -f https://raw.githubusercontent.com/kubernetes/csi-api/release-1.13/pkg/crd/manifests/csidriver.yaml
-#  register: output
-#- debug: msg={{ output.stdout_lines }}
+- name: Apply CRD - CSI Driver v1.14.10
+  shell: kubectl apply -f https://raw.githubusercontent.com/kubernetes/csi-api/kubernetes-1.14.10/pkg/crd/manifests/csidriver.yaml
+  register: output
+- debug: msg={{ output.stdout_lines }}
 
-#- name: Apply CRD - CSI Node Info v1.13
-  #shell: kubectl apply -f https://raw.githubusercontent.com/kubernetes/csi-api/release-1.13/pkg/crd/manifests/csinodeinfo.yaml
-  #register: output
-#- debug: msg={{ output.stdout_lines }}
+- name: Apply CRD - CSI Node Info v1.14.10
+  shell: kubectl apply -f https://raw.githubusercontent.com/kubernetes/csi-api/kubernetes-1.14.10/pkg/crd/manifests/csinodeinfo.yaml
+  register: output
+- debug: msg={{ output.stdout_lines }}
 
 - name: Apply Hetzner CSI v1.4.0
   shell: kubectl apply -f https://raw.githubusercontent.com/hetznercloud/csi-driver/v1.4.0/deploy/kubernetes/hcloud-csi.yml
