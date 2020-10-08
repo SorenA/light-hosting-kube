@@ -41,21 +41,12 @@ spec:
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 2
-          securityContext:
-            capabilities:
-              drop:
-                - ALL
-            readOnlyRootFilesystem: true
-            runAsGroup: 65532
-            runAsNonRoot: true
-            runAsUser: 65532
           args:
             - --api
-            - --api.insecure
             - --api.dashboard
-            - --entryPoints.traefik.address=:9000/tcp
-            - --entryPoints.http.address=:80/tcp
-            - --entryPoints.https.address=:443/tcp
+            - --entryPoints.traefik.address=:9000
+            - --entryPoints.web.address=:80
+            - --entryPoints.websecure.address=:443
             - --providers.kubernetescrd
             - --providers.kubernetesingress
             - --ping
@@ -65,9 +56,9 @@ spec:
             - name: traefik
               containerPort: 9000
               protocol: TCP
-            - name: http
+            - name: web
               containerPort: 80
               hostPort: 80
-            - name: https
+            - name: websecure
               containerPort: 443
               hostPort: 443

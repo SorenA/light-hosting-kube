@@ -14,12 +14,7 @@
     state: present
     definition: "{{ lookup('template', '02-rbac.yml') }}"
 
-- name: Apply Service
-  k8s:
-    state: present
-    definition: "{{ lookup('template', '03-service.yml') }}"
-
 - name: Apply Daemon Set
   k8s:
     state: present
-    definition: "{{ lookup('template', '04-daemon-set.yml') }}"
+    definition: "{{ lookup('template', '03-daemon-set.yml') }}"
