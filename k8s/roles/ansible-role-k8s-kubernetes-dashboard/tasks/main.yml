@@ -1,8 +1,13 @@
 ---
+- name: Apply namespace
+  k8s:
+    state: present
+    definition: "{{ lookup('template', '00-namespace.yml') }}"
+
 - name: Apply RBAC
   k8s:
     state: present
-    definition: "{{ lookup('template', '00-rbac.yml') }}"
+    definition: "{{ lookup('template', '01-rbac.yml') }}"
 
 - name: Apply Kubernetes Dashboard
   shell: kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.4/aio/deploy/recommended.yaml
