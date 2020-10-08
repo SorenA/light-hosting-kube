@@ -1,0 +1,15 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+
+metadata:
+  name: traefik-dashboard-cert
+  namespace: traefik
+spec:
+  secretName: traefik-dashboard-cert
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: traefik.{{ cluster_domain }}
+  dnsNames:
+    - traefik.{{ cluster_domain }}

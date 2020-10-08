@@ -1,0 +1,15 @@
+---
+- name: Apply Certificate
+  k8s:
+    state: present
+    definition: "{{ lookup('template', '01-certificate.yml') }}"
+
+- name: Apply Secret
+  k8s:
+    state: present
+    definition: "{{ lookup('template', '02-secret.yml') }}"
+
+- name: Apply Ingress
+  k8s:
+    state: present
+    definition: "{{ lookup('template', '03-ingress.yml') }}"

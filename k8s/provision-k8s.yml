@@ -9,3 +9,4 @@
   - ansible-role-k8s-traefik
   - ansible-role-k8s-cert-manager
   - ansible-role-k8s-kubernetes-dashboard
+  - ansible-role-k8s-traefik-dashboard

@@ -1,0 +1,31 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+
+metadata:
+  name: traefik-dashboard-websecure
+  namespace: traefik
+spec:
+  entryPoints:
+    - websecure
+  tls:
+    secretName: traefik-dashboard-cert
+  routes:
+  - match: Host(`traefik.{{ cluster_domain }}`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
+    kind: Rule
+    middlewares:
+      - name: traefik-dashboard-auth-middleware
+    services:
+    - name: api@internal
+      kind: TraefikService
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+
+metadata:
+  name: traefik-dashboard-auth-middleware
+  namespace: traefik
+spec:
+  basicAuth:
+    secret: traefik-dashboard-auth-secret
