@@ -21,8 +21,12 @@ spec:
       terminationGracePeriodSeconds: 60
       containers:
         - name: traefik
-          image: traefik:v2.3.0
+          image: traefik:v2.3.4
           imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
           readinessProbe:
             httpGet:
               path: /ping

@@ -6,7 +6,7 @@
   - ansible-role-k8s-hcloud-cloud-controller
   - ansible-role-k8s-hcloud-csi
   - ansible-role-k8s-hcloud-floating-ip-controller
-  - ansible-role-k8s-traefik
   - ansible-role-k8s-cert-manager
   - ansible-role-k8s-kubernetes-dashboard
+  - ansible-role-k8s-traefik-proxy
   - ansible-role-k8s-traefik-dashboard
