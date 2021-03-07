@@ -18,6 +18,10 @@ spec:
         - name: fip-controller
           image: cbeneke/hcloud-fip-controller:v0.3.5
           imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
           env:
             - name: NODE_NAME
               valueFrom:
